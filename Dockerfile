@@ -12,4 +12,4 @@ RUN apt update -y \
 
 COPY scripts /scripts
 
-ENTRYPOINT ["/scripts/docker-entrypoint.sh", "jeudesprits-iOS"]
+ENTRYPOINT ["/bin/bash", "/scripts/docker-entrypoint.sh", "jeudesprits-iOS"]
