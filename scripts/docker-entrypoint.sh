@@ -75,18 +75,14 @@ function generateConfigs () {
     AllowedIPs = 0.0.0.0/0,::/0" >> "/etc/wireguard/$1-client.conf"
 
     # Add pre shared symmetric key to respective files
-    case "$IS_PRE_SYMM" in
-        [yY][eE][sS]|[yY]) 
-            CLIENT_SYMM_PRE_KEY=$( wg genpsk )
-            echo "PresharedKey = $CLIENT_SYMM_PRE_KEY" >> "/etc/wireguard/$SERVER_WG_NIC.conf"
-            echo "PresharedKey = $CLIENT_SYMM_PRE_KEY" >> "/etc/wireguard/$1-client.conf"
-            ;;
-    esac
-
+    CLIENT_SYMM_PRE_KEY=$( wg genpsk )
+    echo "PresharedKey = $CLIENT_SYMM_PRE_KEY" >> "/etc/wireguard/$SERVER_WG_NIC.conf"
+    echo "PresharedKey = $CLIENT_SYMM_PRE_KEY" >> "/etc/wireguard/$1-client.conf"
+ 
     chmod 600 -R /etc/wireguard/
 }
 
-function shutdown() {
+function shutdown () {
     echo "$(date): Stopping wireguard"
     wg-quick down $config
     rmmod wireguard
