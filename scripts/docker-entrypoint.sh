@@ -1,6 +1,6 @@
 set -e
 
-function install () {
+install () {
     if ! dpkg -l linux-headers-$(uname -r) | tail -1 | grep -qE '^ii'; then
         apt update
         apt install --yes --no-install-recommends linux-headers-$(uname -r)
@@ -11,7 +11,7 @@ function install () {
     modprobe wireguard
 }
 
-function generateConfigs () { 
+generateConfigs () { 
     # Detect public IPv4 address and pre-fill for the user
     SERVER_PUB_IPV4=$(ip addr | grep 'inet' | grep -v inet6 | grep -vE '127\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | grep -oE '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | head -1)
 
@@ -82,7 +82,7 @@ function generateConfigs () {
     chmod 600 -R /etc/wireguard/
 }
 
-function shutdown () {
+shutdown () {
     echo "$(date): Stopping wireguard"
     wg-quick down $config
     rmmod wireguard
