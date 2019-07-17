@@ -1,7 +1,7 @@
 FROM ubuntu:bionic
 
 RUN apt update -y \
-    && apt install -y software-properties-common iptables curl iproute2 ifupdown iputils-ping \
+    && apt install -y software-properties-common iptables curl iproute2 ifupdown iputils-ping dkms \
     && echo resolvconf resolvconf/linkify-resolvconf boolean false | debconf-set-selections \
     && echo "REPORT_ABSENT_SYMLINK=no" >> /etc/default/resolvconf \
     && add-apt-repository --yes ppa:wireguard/wireguard \
