@@ -6,13 +6,13 @@ install () {
     # Install Wireguard. This has to be done dynamically since the kernel
     # module depends on the host kernel version.
     apt update
-    apt install -y linux-headers-$(uname -r)
+    apt install -y linux-headers-"$(uname -r)"
     apt install -y wireguard
 }
 
 generateConfigs () { 
     # Detect public IPv4 address and pre-fill for the user
-    SERVER_PUB_IPV4=$(ip addr | grep 'inet' | grep -v inet6 | grep -vE '127\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | grep -oE '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | head -1)
+    SERVER_PUB_IP=$(ip addr | grep 'inet' | grep -v inet6 | grep -vE '127\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | grep -oE '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | head -1)
 
     # Detect public interface and pre-fill for the user
     SERVER_PUB_NIC="$(ip -4 route ls | grep default | grep -Po '(?<=dev )(\S+)' | head -1)"
@@ -82,29 +82,26 @@ generateConfigs () {
 }
 
 shutdown () {
-    echo "$(date): Stopping wireguard"
-    wg-quick down $config
-    rmmod wireguard
-    echo "$(date): Uninstalling dkms module"
-    dkms uninstall wireguard/$MODULE_VERSION
+    echo "$(date): Shutting down Wireguard"
+    wg-quick down "$interface"
     exit 0
 }
 
-install
+install "$@"
 
-generateConfigs
+generateConfigs "$@"
 
 # Find a Wireguard interface
-interfaces=`find /etc/wireguard -type f`
+interfaces="find /etc/wireguard -type f"
 if [[ -z $interfaces ]]; then
     echo "$(date): Interface not found in /etc/wireguard" >&2
     exit 1
 fi
 
-interface=`echo $interfaces | head -n 1`
+interface="echo $interfaces | head -n 1"
 
 echo "$(date): Starting Wireguard"
-wg-quick up $interface
+wg-quick up "$interface"
 
 # Handle shutdown behavior
 trap shutdown SIGTERM SIGINT SIGQUIT
