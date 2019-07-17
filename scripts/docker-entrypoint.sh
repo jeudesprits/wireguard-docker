@@ -1,14 +1,11 @@
 set -e
 
 install () {
-    if ! dpkg -l linux-headers-$(uname -r) | tail -1 | grep -qE '^ii'; then
-        apt update
-        apt install --yes --no-install-recommends linux-headers-$(uname -r)
-        apt clean && rm -rf /var/lib/apt/lists/*
-    fi
-    MODULE_VERSION=$(dpkg -l | grep 'wireguard-dkms' | awk '{ print $3 }' | awk -F '-' '{ print $1 }')
-    dkms install wireguard/$MODULE_VERSION
-    modprobe wireguard
+    # Install Wireguard. This has to be done dynamically since the kernel
+    # module depends on the host kernel version.
+    apt update
+    apt install -y linux-headers-$(uname -r)
+    apt install -y wireguard
 }
 
 generateConfigs () { 
@@ -95,19 +92,20 @@ install
 
 generateConfigs
 
-config="/etc/wireguard/$SERVER_WG_NIC.conf"
-if ip a | grep -q $(basename $config | cut -f 1 -d '.'); then
-    echo "$(date): Stopping existing interface"
-    wg-quick down $config
+# Find a Wireguard interface
+interfaces=`find /etc/wireguard -type f`
+if [[ -z $interfaces ]]; then
+    echo "$(date): Interface not found in /etc/wireguard" >&2
+    exit 1
 fi
 
-echo "$(date): Starting wireguard using $config"
-wg-quick up $config
-echo "$(date): Running config:"
-wg
+interface=`echo $interfaces | head -n 1`
+
+echo "$(date): Starting Wireguard"
+wg-quick up $interface
 
 # Handle shutdown behavior
-trap shutdown SIGINT SIGTERM SIGQUIT
+trap shutdown SIGTERM SIGINT SIGQUIT
 
 sleep infinity &
 wait $!
