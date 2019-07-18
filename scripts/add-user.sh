@@ -50,11 +50,14 @@ Endpoint = $ENDPOINT
 AllowedIPs = 0.0.0.0/0" >> "/etc/wireguard/$CLIENT-client.conf"
 
 # Add pre shared symmetric key to respective files
-echo "PresharedKey = $CLIENT_SYMM_PRE_KEY" >> "/etc/wireguard/$SERVER_WG_NIC.conf"
+# echo "PresharedKey = $CLIENT_SYMM_PRE_KEY" >> "/etc/wireguard/$SERVER_WG_NIC.conf"
 echo "PresharedKey = $CLIENT_SYMM_PRE_KEY" >> "/etc/wireguard/$CLIENT-client.conf"
 
 # Add peer
 wg set SERVER_WG_NIC peer CLIENT_PUB_KEY preshared-key <(echo "$CLIENT_SYMM_PRE_KEY") allowed-ips PEER_ADDRESS
+
+# Save to conf
+wg-quick save wg0
 
 # Logging
 echo "Added peer $PEER_ADDRESS with public key $CLIENT_PUB_KEY"
