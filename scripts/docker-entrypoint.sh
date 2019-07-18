@@ -5,9 +5,12 @@ set -e
 function install () {
     # Install Wireguard. This has to be done dynamically since the kernel
     # module depends on the host kernel version.
-    apt update
-    apt install -y linux-headers-"$(uname -r)"
-    apt install -y wireguard
+    apt-get update
+    apt-get install -y linux-headers-"$(uname -r)"
+    apt-get install -y wireguard
+    apt-get autoremove -y 
+    apt-get clean -y 
+    rm -rf /var/lib/apt/lists/*
 }
 
 function generateConfigs () { 
