@@ -14,4 +14,4 @@ COPY scripts /scripts
 
 ENTRYPOINT ["/bin/bash", "/scripts/docker-entrypoint.sh"]
 
-CMD ["jeudesprits-iOS"]
+CMD []

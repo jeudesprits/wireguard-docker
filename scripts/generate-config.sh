@@ -4,17 +4,14 @@
 SERVER_PUB_IP="$(ip addr | grep 'inet' | grep -v inet6 | grep -vE '127\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | grep -oE '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | head -1)"
 
 SERVER_WG_NIC="wg0"
-
 # Generate peer keys
 CLIENT_PRIV_KEY="$(wg genkey)"
 
 CLIENT_PUB_KEY="$(echo "$CLIENT_PRIV_KEY" | wg pubkey)"
 
 CLIENT_SYMM_PRE_KEY="$(wg genpsk)"
-
 # Read server key from interface
 SERVER_PUB_KEY="$(wg show "$SERVER_WG_NIC" public-key)"
-
 # Get next free peer IP (This will break after x.x.x.255)
 PEER_ADDRESS="$(wg show "$SERVER_WG_NIC" allowed-ips | cut -f 2 | awk -F'[./]' '{print $1"."$2"."$3"."1+$4"/"$5}' | sort -t '.' -k 1,1 -k 2,2 -k 3,3 -k 4,4 -n | tail -n1)"
 
@@ -49,4 +46,4 @@ echo "PresharedKey = $CLIENT_SYMM_PRE_KEY" >> "/etc/wireguard/$1-client.conf"
 wg set SERVER_WG_NIC peer CLIENT_PUB_KEY preshared-key <(echo "$CLIENT_SYMM_PRE_KEY") allowed-ips PEER_ADDRESS
 
 # Logging
-echo "$(date): Added peer $PEER_ADDRESS with public key $CLIENT_PUB_KEY"
+echo "Added peer $PEER_ADDRESS with public key $CLIENT_PUB_KEY"
