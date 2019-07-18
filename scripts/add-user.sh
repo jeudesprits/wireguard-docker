@@ -61,9 +61,7 @@ AllowedIPs = 0.0.0.0/0" >> "/etc/wireguard/$CLIENT-client.conf"
 CLIENT_SYMM_PRE_KEY=$( wg genpsk )
 echo "PresharedKey = $CLIENT_SYMM_PRE_KEY" >> "/etc/wireguard/$SERVER_WG_NIC.conf"
 echo "PresharedKey = $CLIENT_SYMM_PRE_KEY" >> "/etc/wireguard/$CLIENT-client.conf"
- 
-# Save to conf
-wg-quick save wg0
+
 
 # Logging
 echo "Added peer $CLIENT with public key $CLIENT_PUB_KEY"
