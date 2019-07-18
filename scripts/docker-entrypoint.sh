@@ -49,28 +49,28 @@ function generateConfigs () {
 
     # Add server interface
     echo "[Interface]
-    Address = $SERVER_WG_IPV4/24,$SERVER_WG_IPV6/64
-    ListenPort = $SERVER_PORT
-    PrivateKey = $SERVER_PRIV_KEY
-    PostUp = iptables -t nat -A POSTROUTING -o $SERVER_PUB_NIC -j MASQUERADE; ip6tables -t nat -A POSTROUTING -o $SERVER_PUB_NIC -j MASQUERADE
-    PostDown = iptables -t nat -D POSTROUTING -o $SERVER_PUB_NIC -j MASQUERADE; ip6tables -t nat -D POSTROUTING -o $SERVER_PUB_NIC -j MASQUERADE" > "/etc/wireguard/$SERVER_WG_NIC.conf"
+Address = $SERVER_WG_IPV4/24,$SERVER_WG_IPV6/64
+ListenPort = $SERVER_PORT
+PrivateKey = $SERVER_PRIV_KEY
+PostUp = iptables -t nat -A POSTROUTING -o $SERVER_PUB_NIC -j MASQUERADE; ip6tables -t nat -A POSTROUTING -o $SERVER_PUB_NIC -j MASQUERADE
+PostDown = iptables -t nat -D POSTROUTING -o $SERVER_PUB_NIC -j MASQUERADE; ip6tables -t nat -D POSTROUTING -o $SERVER_PUB_NIC -j MASQUERADE" > "/etc/wireguard/$SERVER_WG_NIC.conf"
 
     # Add the client as a peer to the server
     echo "[Peer]
-    PublicKey = $CLIENT_PUB_KEY
-    AllowedIPs = $CLIENT_WG_IPV4/32,$CLIENT_WG_IPV6/128" >> "/etc/wireguard/$SERVER_WG_NIC.conf"
+PublicKey = $CLIENT_PUB_KEY
+AllowedIPs = $CLIENT_WG_IPV4/32,$CLIENT_WG_IPV6/128" >> "/etc/wireguard/$SERVER_WG_NIC.conf"
 
     # Create client file with interface
     echo "[Interface]
-    PrivateKey = $CLIENT_PRIV_KEY
-    Address = $CLIENT_WG_IPV4/24,$CLIENT_WG_IPV6/64
-    DNS = $CLIENT_DNS_1,$CLIENT_DNS_2" > "/etc/wireguard/$1-client.conf"
+PrivateKey = $CLIENT_PRIV_KEY
+Address = $CLIENT_WG_IPV4/24,$CLIENT_WG_IPV6/64
+DNS = $CLIENT_DNS_1,$CLIENT_DNS_2" > "/etc/wireguard/$1-client.conf"
 
     # Add the server as a peer to the client
     echo "[Peer]
-    PublicKey = $SERVER_PUB_KEY
-    Endpoint = $ENDPOINT
-    AllowedIPs = 0.0.0.0/0,::/0" >> "/etc/wireguard/$1-client.conf"
+PublicKey = $SERVER_PUB_KEY
+Endpoint = $ENDPOINT
+AllowedIPs = 0.0.0.0/0,::/0" >> "/etc/wireguard/$1-client.conf"
 
     # Add pre shared symmetric key to respective files
     CLIENT_SYMM_PRE_KEY=$( wg genpsk )
