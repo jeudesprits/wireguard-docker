@@ -8,6 +8,6 @@ RUN apt-get update -y \
 
 COPY scripts /scripts
 
-ENTRYPOINT ["/bin/bash", "/scripts/docker-entrypoint.sh"]
+ENTRYPOINT ["bash", "/scripts/docker-entrypoint.sh"]
 
 CMD []

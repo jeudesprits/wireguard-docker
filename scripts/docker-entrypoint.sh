@@ -22,7 +22,6 @@ function generateConfigs () {
     SERVER_PUB_NIC="$(ip -4 route ls | grep default | grep -Po '(?<=dev )(\S+)' | head -1)"
 
     SERVER_WG_NIC="wg0"
-    read -rp "WireGuard interface name: " -e -i "$SERVER_WG_NIC" SERVER_WG_NIC
 
     SERVER_WG_IPV4="10.66.66.1"
 
@@ -33,7 +32,7 @@ function generateConfigs () {
 
     echo "Tell me a name for the client."
 	echo "Use one word only, no special characters."
-	until [[ "$CLIENT" =~ ^[a-zA-Z0-9_]+$ ]]; do
+	until [[ "$CLIENT" =~ ^[a-zA-Z0-9_-]+$ ]]; do
 		read -rp "Client name: " -e CLIENT
 	done
 
