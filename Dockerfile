@@ -1,6 +1,8 @@
 FROM ubuntu:bionic
 
-RUN add-apt-repository -y ppa:wireguard/wireguard \
+RUN apt-get update -y \
+    && apt-get install -y software-properties-common \
+    && add-apt-repository -y ppa:wireguard/wireguard \
     && apt-get update -y \
     && apt-get install -y --no-install-recommends bash iptables wireguard \
     && apt-get autoremove -y \
