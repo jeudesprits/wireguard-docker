@@ -13,7 +13,6 @@ function install () {
 function generateConfigs () { 
     # Detect public IPv4 address and pre-fill for the user
     SERVER_PUB_IP=$(ip addr | grep 'inet' | grep -v inet6 | grep -vE '127\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | grep -oE '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | head -1)
-
     # Detect public interface and pre-fill for the user
     SERVER_PUB_NIC="$(ip -4 route ls | grep default | grep -Po '(?<=dev )(\S+)' | head -1)"
 
@@ -23,7 +22,7 @@ function generateConfigs () {
 
     SERVER_WG_IPV6="fd42:42:42::1"
 
-    SERVER_PORT=1194
+    SERVER_PORT="1194"
 
     CLIENT_WG_IPV4="10.66.66.2"
 
