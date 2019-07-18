@@ -3,7 +3,7 @@
 cd "/etc/wireguard" || exit
 
 LAST_CONFIG="$(ls -t | grep 'client' | head -n 1)"
-SERVER_PUB_IP="$(grep -Po '(?<=Endpoint = )(.+)' "$LAST_CONFIG")"
+ENDPOINT="$(grep -Po '(?<=Endpoint = )(.+)' "$LAST_CONFIG")"
 FULL_IP="$(grep -Po '(?<=Address = )(.+)' "$LAST_CONFIG")" 
 IP="${FULL_IP:: -3}"
 
@@ -37,13 +37,6 @@ read -rp "First DNS resolver to use for the client: " -e -i "$CLIENT_DNS_1" CLIE
 
 CLIENT_DNS_2="8.8.4.4"
 read -rp "Second DNS resolver to use for the client: " -e -i "$CLIENT_DNS_2" CLIENT_DNS_2
-
-if [[ $SERVER_PUB_IP =~ .*:.* ]]
-then
-ENDPOINT="[$SERVER_PUB_IP]:$SERVER_PORT"
-else
-ENDPOINT="$SERVER_PUB_IP:$SERVER_PORT"
-fi
 
 # Add the client as a peer to the server
 echo "
