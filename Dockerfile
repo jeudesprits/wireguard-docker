@@ -5,10 +5,7 @@ RUN apt-get update -y \
     && echo resolvconf resolvconf/linkify-resolvconf boolean false | debconf-set-selections \
     && echo "REPORT_ABSENT_SYMLINK=no" >> /etc/default/resolvconf \
     && add-apt-repository --yes ppa:wireguard/wireguard \
-    && apt-get install resolvconf \
-    && apt-get autoremove -y \
-    && apt-get clean -y \
-    && rm -rf /var/lib/apt/lists/*
+    && apt-get install resolvconf 
 
 COPY scripts /scripts
 
