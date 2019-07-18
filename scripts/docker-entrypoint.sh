@@ -68,7 +68,9 @@ PostUp = iptables -t nat -A POSTROUTING -o $SERVER_PUB_NIC -j MASQUERADE; ip6tab
 PostDown = iptables -t nat -D POSTROUTING -o $SERVER_PUB_NIC -j MASQUERADE; ip6tables -t nat -D POSTROUTING -o $SERVER_PUB_NIC -j MASQUERADE" > "/etc/wireguard/$SERVER_WG_NIC.conf"
 
     # Add the client as a peer to the server
-    echo "[Peer]
+    echo "
+[Peer]
+# $CLIENT
 PublicKey = $CLIENT_PUB_KEY
 AllowedIPs = $CLIENT_WG_IPV4/32" >> "/etc/wireguard/$SERVER_WG_NIC.conf"
 
