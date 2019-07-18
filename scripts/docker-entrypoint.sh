@@ -2,7 +2,7 @@
 
 set -e
 
-install () {
+function install () {
     # Install Wireguard. This has to be done dynamically since the kernel
     # module depends on the host kernel version.
     apt update
@@ -10,7 +10,7 @@ install () {
     apt install -y wireguard
 }
 
-generateConfigs () { 
+function generateConfigs () { 
     # Detect public IPv4 address and pre-fill for the user
     SERVER_PUB_IP=$(ip addr | grep 'inet' | grep -v inet6 | grep -vE '127\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | grep -oE '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | head -1)
 
@@ -81,9 +81,9 @@ generateConfigs () {
     chmod 600 -R /etc/wireguard/
 }
 
-shutdown () {
-    echo "$(date): Shutting down Wireguard"
-    wg-quick down "$interface"
+function shutdown () {
+    echo "Shutting down Wireguard"
+    wg-quick down "$SERVER_WG_NIC"
     exit 0
 }
 
@@ -91,7 +91,7 @@ install "$@"
 
 generateConfigs "$@"
 
-echo "$(date): Starting Wireguard"
+echo "Starting Wireguard"
 wg-quick up "$SERVER_WG_NIC"
 
 # Handle shutdown behavior
