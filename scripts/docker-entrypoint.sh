@@ -6,10 +6,11 @@ function install () {
     # Install Wireguard. This has to be done dynamically since the kernel
     # module depends on the host kernel version.
     apt-get update
+    apt-get -y install curl
     apt-get install -y linux-headers-"$(uname -r)"
     apt-get install -y wireguard
-    apt-get autoremove -y 
-    apt-get clean -y 
+    apt-get -y autoremove 
+    apt-get -y clean
     rm -rf /var/lib/apt/lists/*
 }
 
