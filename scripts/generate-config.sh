@@ -39,7 +39,7 @@ DNS = $CLIENT_DNS_1,$CLIENT_DNS_2" > "/etc/wireguard/$1-client.conf"
 echo "[Peer]
 PublicKey = $SERVER_PUB_KEY
 Endpoint = $ENDPOINT
-AllowedIPs = 0.0.0.0/0,::/0" >> "/etc/wireguard/$1-client.conf"
+AllowedIPs = 0.0.0.0/0" >> "/etc/wireguard/$1-client.conf"
 
 # Add pre shared symmetric key to respective files
 echo "PresharedKey = $CLIENT_SYMM_PRE_KEY" >> "/etc/wireguard/$SERVER_WG_NIC.conf"
