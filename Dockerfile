@@ -1,11 +1,11 @@
 FROM ubuntu:bionic
 
-RUN apt-get update -y \
-    && apt-get install -y software-properties-common apt-utils iptables curl iproute2 ifupdown iputils-ping bash \
-    && echo resolvconf resolvconf/linkify-resolvconf boolean false | debconf-set-selections \
-    && echo "REPORT_ABSENT_SYMLINK=no" >> /etc/default/resolvconf \
-    && add-apt-repository --yes ppa:wireguard/wireguard \
-    && apt-get install resolvconf 
+RUN add-apt-repository -y ppa:wireguard/wireguard \
+    && apt-get update -y \
+    && apt-get install -y --no-install-recommends bash iptables wireguard \
+    && apt-get autoremove -y \
+    && apt-get clean -y \
+    && rm -rf /var/lib/apt/lists/*
 
 COPY scripts /scripts
 
