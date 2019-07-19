@@ -5,7 +5,7 @@ Simple Docker container with WireGuard VPN and the ability to add new users. **Z
 1. Clone this repo: `git clone https://github.com/jeudesprits/wireguard-docker`
 2. Go to folder: `cd wireguard-docker`
 3. Build docker container: `docker build --tag=jeudesprits/wireguard-docker .`
-4. Run docker container. Be sure that you specify the correct port for VPN. 
+4. Run docker container. Be sure that you specify the correct port for VPN: 
 ```
 docker run -it --rm --cap-add net_admin --cap-add sys_module \
            -v $HOME/.wireguard:/etc/wireguard -v /lib/modules:/lib/modules \
@@ -36,7 +36,7 @@ Starting Wireguard
 
 # 🆘 Tips
 1. All created VPN configs in `$HOME/.wireguard` folder.
-2. To add a user type `docker exec -it YOUR-CONTAINER-ID bash /scripts/add-user.sh` Remember answer the questions. 
+2. To add a new user type `docker exec -it YOUR-CONTAINER-ID bash /scripts/add-user.sh` Remember answer the questions. 
 
 # 👨‍💻 Author 
 [jeudesprits](t.me/jeudesprits)
