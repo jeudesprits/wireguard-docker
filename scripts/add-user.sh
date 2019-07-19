@@ -1,5 +1,7 @@
 #!/bin/bash
 
+clear 
+
 cd "/etc/wireguard" || exit
 
 LAST_CONFIG="$(ls -t | grep 'client' | head -n 1)"
@@ -62,6 +64,8 @@ CLIENT_SYMM_PRE_KEY=$( wg genpsk )
 echo "PresharedKey = $CLIENT_SYMM_PRE_KEY" >> "/etc/wireguard/$SERVER_WG_NIC.conf"
 echo "PresharedKey = $CLIENT_SYMM_PRE_KEY" >> "/etc/wireguard/$CLIENT-client.conf"
 
+wg-quick down "$SERVER_WG_NIC"
+wg-quick up "$SERVER_WG_NIC"
 
 # Logging
 echo "Added peer $CLIENT with public key $CLIENT_PUB_KEY"
