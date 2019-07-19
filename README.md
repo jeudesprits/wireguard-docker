@@ -38,5 +38,3 @@ Starting Wireguard
 
 # 🆘 Tips
 All created VPN configs in `$HOME/.wireguard` folder.
-
-
