@@ -39,4 +39,4 @@ Starting Wireguard
 2. To add a new user type `docker exec -it YOUR-CONTAINER-ID bash /scripts/add-user.sh` Remember answer the questions. 
 
 # 👨‍💻 Author 
-[jeudesprits](t.me/jeudesprits)
+[jeudesprits](https://t.me/jeudesprits)
