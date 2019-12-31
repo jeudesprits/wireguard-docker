@@ -3,12 +3,8 @@
 set -e
 
 function install () {
-    # Install Wireguard. This has to be done dynamically since the kernel
-    # module depends on the host kernel version.
-    add-apt-repository -y ppa:wireguard/wireguard 
     apt-get update -y
-    apt-get install -y linux-headers-"$(uname -r)"
-    apt-get install -y wireguard
+    apt-get install -y wireguard-dkms
     apt-get autoremove -y
     apt-get clean -y
     rm -rf /var/lib/apt/lists/*
