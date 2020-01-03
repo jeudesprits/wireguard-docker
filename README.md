@@ -9,7 +9,7 @@ Simple Docker container with WireGuard VPN and the ability to add new users. **Z
 ```
 docker run -it --rm --cap-add net_admin --cap-add sys_module \
            -v $HOME/.wireguard:/etc/wireguard -v /lib/modules:/lib/modules \
-           -e TZ=Asia/Tashkent
+           -e TZ=Asia/Tashkent \
            -p 1194:1194/udp \
             jeudesprits/wireguard-docker:latest
 ```
